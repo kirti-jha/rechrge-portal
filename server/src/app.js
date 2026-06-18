@@ -1,6 +1,8 @@
 import cors from 'cors'
 import express from 'express'
+import authRoutes from './routes/authRoutes.js'
 import hierarchyRoutes from './routes/hierarchyRoutes.js'
+import supportRoutes from './routes/supportRoutes.js'
 
 export function createApp() {
   const app = express()
@@ -22,7 +24,9 @@ export function createApp() {
     })
   })
 
+  app.use('/api/auth', authRoutes)
   app.use('/api/hierarchy', hierarchyRoutes)
+  app.use('/api/support', supportRoutes)
 
   app.use((req, res) => {
     res.status(404).json({ message: 'Route not found.' })
@@ -30,9 +34,7 @@ export function createApp() {
 
   app.use((error, req, res, next) => {
     console.error(error)
-    res.status(500).json({
-      message: 'Internal server error.',
-    })
+    res.status(500).json({ message: 'Internal server error.' })
   })
 
   return app

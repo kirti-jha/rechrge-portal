@@ -1,5 +1,6 @@
 import Reveal from './Reveal'
 import Simulator from './Simulator'
+import { Link } from 'react-router-dom'
 
 export default function Hero({ activeSimTab, setActiveSimTab }) {
   return (
@@ -14,8 +15,8 @@ export default function Hero({ activeSimTab, setActiveSimTab }) {
           correction workflows, mobile and DTH services, plus a retailor hierarchy that can grow from admin to unlimited downlines.
         </p>
         <div className="hero-actions">
-          <a className="primary-button" href="#hierarchy">Free Retailor Setup</a>
-          <a className="secondary-button" href="#simulator">Explore Services</a>
+          <Link className="primary-button" to="/hierarchy">Free Retailor Setup</Link>
+          <Link className="secondary-button" to="/services">Explore Services</Link>
         </div>
         <div className="hero-signal-grid">
           <article className="hero-signal-card">

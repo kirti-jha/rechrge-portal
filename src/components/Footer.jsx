@@ -1,12 +1,14 @@
-export default function Footer({ switchSimTab }) {
+import { Link } from 'react-router-dom'
+
+export default function Footer() {
   return (
     <footer className="footer reveal visible">
       <div className="footer-grid">
         <div className="footer-col brand-col">
-          <div className="brand-mark">
+          <Link className="brand-mark" to="/">
             <span className="brand-dot" />
             <span className="brand-name">LPay</span>
-          </div>
+          </Link>
           <p className="footer-desc">
             Business-focused recharge software for admins and retailors who need faster service handling,
             simpler network creation, and cleaner charge visibility.
@@ -36,20 +38,20 @@ export default function Footer({ switchSimTab }) {
         <div className="footer-col">
           <h3>Platform</h3>
           <ul className="footer-links-list">
-            <li><a href="#services">Services</a></li>
-            <li><a href="#hierarchy">Hierarchy</a></li>
-            <li><a href="#about">About LPay</a></li>
-            <li><a href="#faq">FAQ Hub</a></li>
+            <li><Link to="/services">Services</Link></li>
+            <li><Link to="/hierarchy">Hierarchy</Link></li>
+            <li><Link to="/about">About LPay</Link></li>
+            <li><Link to="/faq">FAQ Hub</Link></li>
           </ul>
         </div>
 
         <div className="footer-col">
           <h3>Workflows</h3>
           <ul className="footer-links-list">
-            <li><a href="#simulator" onClick={(event) => { event.preventDefault(); switchSimTab('mobile') }}>Mobile Recharge</a></li>
-            <li><a href="#simulator" onClick={(event) => { event.preventDefault(); switchSimTab('dth') }}>DTH Recharge</a></li>
-            <li><a href="#simulator" onClick={(event) => { event.preventDefault(); switchSimTab('pan') }}>PAN Processing</a></li>
-            <li><a href="#contact">Partner Callback</a></li>
+            <li><Link to="/services">Mobile Recharge</Link></li>
+            <li><Link to="/services">DTH Recharge</Link></li>
+            <li><Link to="/services">PAN Processing</Link></li>
+            <li><Link to="/contact">Partner Callback</Link></li>
           </ul>
         </div>
 

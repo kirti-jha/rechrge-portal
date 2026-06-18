@@ -1,26 +1,36 @@
 import { useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
+
+const navItems = [
+  { to: '/services', label: 'Services' },
+  { to: '/hierarchy', label: 'Hierarchy' },
+  { to: '/about', label: 'About' },
+  { to: '/results', label: 'Why Choose Us' },
+  { to: '/faq', label: 'FAQ' },
+  { to: '/contact', label: 'Contact' },
+]
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const handleNavClick = () => setMenuOpen(false)
+  const closeMenu = () => setMenuOpen(false)
 
   return (
     <header className={`topbar${menuOpen ? ' open' : ''}`}>
-      <div className="brand-mark">
+      <Link className="brand-mark" to="/" onClick={closeMenu}>
         <span className="brand-dot" />
         <div>
           <p className="brand-name">LPay</p>
           <p className="brand-subtitle">Recharge &amp; PAN Services</p>
         </div>
-      </div>
+      </Link>
 
       <button
         className="nav-toggle"
         type="button"
         aria-label="Toggle navigation"
         aria-expanded={menuOpen}
-        onClick={() => setMenuOpen(o => !o)}
+        onClick={() => setMenuOpen((open) => !open)}
       >
         <span />
         <span />
@@ -28,17 +38,21 @@ export default function Header() {
       </button>
 
       <nav className="nav">
-        <a href="#services" onClick={handleNavClick}>Services</a>
-        <a href="#hierarchy" onClick={handleNavClick}>Hierarchy</a>
-        <a href="#about" onClick={handleNavClick}>About</a>
-        <a href="#results" onClick={handleNavClick}>Why Choose Us</a>
-        <a href="#faq" onClick={handleNavClick}>FAQ</a>
-        <a href="#contact" onClick={handleNavClick}>Contact</a>
+        {navItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            onClick={closeMenu}
+            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+          >
+            {item.label}
+          </NavLink>
+        ))}
       </nav>
 
       <div className="nav-actions">
-        <a className="text-link" href="#contact" onClick={handleNavClick}>Partner Login</a>
-        <a className="primary-button small" href="#hierarchy" onClick={handleNavClick}>View Network</a>
+        <NavLink className="text-link" to="/login" onClick={closeMenu}>Partner Login</NavLink>
+        <NavLink className="primary-button small" to="/portal" onClick={closeMenu}>Open Portal</NavLink>
       </div>
     </header>
   )

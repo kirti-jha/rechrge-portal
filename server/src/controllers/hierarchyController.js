@@ -2,6 +2,8 @@ import {
   createRetailor,
   getStoreMode,
   listHierarchyUsers,
+  listUsersForActor,
+  updateUserCharges,
 } from '../services/hierarchyStore.js'
 
 function buildSummary(network) {
@@ -24,7 +26,6 @@ function buildSummary(network) {
 export async function getHierarchy(req, res, next) {
   try {
     const network = await listHierarchyUsers()
-
     res.json({
       mode: getStoreMode(),
       summary: buildSummary(network),
@@ -35,13 +36,25 @@ export async function getHierarchy(req, res, next) {
   }
 }
 
+export async function getUsers(req, res, next) {
+  try {
+    const data = await listUsersForActor(req.auth.user.id)
+    res.json({
+      mode: getStoreMode(),
+      ...data,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export async function postRetailor(req, res, next) {
   try {
-    const { creatorId, name, code, charges } = req.body
+    const { name, email, phone, code, password, charges } = req.body
 
-    if (!creatorId || !name?.trim() || !code?.trim()) {
+    if (!name?.trim() || !email?.trim() || !code?.trim() || !password?.trim()) {
       return res.status(400).json({
-        message: 'creatorId, name, and code are required.',
+        message: 'name, email, code, and password are required.',
       })
     }
 
@@ -52,32 +65,52 @@ export async function postRetailor(req, res, next) {
     }
 
     if (Object.values(chargeValues).some((value) => Number.isNaN(value) || value < 0)) {
-      return res.status(400).json({
-        message: 'Charges must be non-negative numbers.',
-      })
+      return res.status(400).json({ message: 'Charges must be non-negative numbers.' })
     }
 
     const result = await createRetailor({
-      creatorId,
+      actorId: req.auth.user.id,
       name,
+      email,
+      phone,
       code,
+      password,
       charges: chargeValues,
     })
 
-    const network = await listHierarchyUsers()
+    const data = await listUsersForActor(req.auth.user.id)
 
     res.status(201).json({
       message: `${result.retailor.name} created under ${result.creator.name}.`,
       mode: getStoreMode(),
-      summary: buildSummary(network),
-      network,
+      ...data,
       retailor: result.retailor,
     })
   } catch (error) {
-    if (error.message.includes('exists') || error.message.includes('not found')) {
+    if (error.message.includes('exists') || error.message.includes('Only') || error.message.includes('Actor')) {
       return res.status(400).json({ message: error.message })
     }
+    next(error)
+  }
+}
 
+export async function patchUserCharges(req, res, next) {
+  try {
+    const { mobile, dth, pan } = req.body
+    const user = await updateUserCharges({
+      actorId: req.auth.user.id,
+      targetUserId: req.params.userId,
+      charges: { mobile, dth, pan },
+    })
+
+    res.json({
+      message: 'Charges updated successfully.',
+      user,
+    })
+  } catch (error) {
+    if (error.message.includes('cannot') || error.message.includes('not found')) {
+      return res.status(400).json({ message: error.message })
+    }
     next(error)
   }
 }

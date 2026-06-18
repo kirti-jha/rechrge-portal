@@ -1,51 +1,58 @@
-import { useState, useCallback } from 'react'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import MarqueeStrip from './components/MarqueeStrip'
-import Services from './components/Services'
-import About from './components/About'
-import HierarchyManager from './components/HierarchyManager'
-import Results from './components/Results'
-import FAQ from './components/FAQ'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import BackToTop from './components/BackToTop'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import SiteLayout from './components/SiteLayout'
+import DashboardLayout from './components/DashboardLayout'
+import ProtectedRoute from './components/ProtectedRoute'
+import HomePage from './pages/HomePage'
+import ServicesPage from './pages/ServicesPage'
+import HierarchyPage from './pages/HierarchyPage'
+import AboutPage from './pages/AboutPage'
+import ResultsPage from './pages/ResultsPage'
+import FaqPage from './pages/FaqPage'
+import ContactPage from './pages/ContactPage'
+import NotFoundPage from './pages/NotFoundPage'
+import LoginPage from './pages/LoginPage'
+import PortalHomePage from './pages/PortalHomePage'
+import PortalUsersPage from './pages/PortalUsersPage'
+import PortalUserCreatePage from './pages/PortalUserCreatePage'
+import PortalRatesPage from './pages/PortalRatesPage'
+import PortalSupportPage from './pages/PortalSupportPage'
+import PortalSettingsPage from './pages/PortalSettingsPage'
+import PortalPasswordPage from './pages/PortalPasswordPage'
 
-function App() {
-  const [activeSimTab, setActiveSimTab] = useState('mobile')
-
-  const switchSimTab = useCallback((tab) => {
-    setActiveSimTab(tab)
-    setTimeout(() => {
-      const el = document.getElementById('simulator')
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }, 50)
-  }, [])
-
+export default function App() {
   return (
-    <>
-      <div className="glow-bg glow-cyan" aria-hidden="true" />
-      <div className="glow-bg glow-purple" aria-hidden="true" />
-      <div className="page-noise" aria-hidden="true" />
+    <Routes>
+      <Route element={<SiteLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/hierarchy" element={<HierarchyPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/results" element={<ResultsPage />} />
+        <Route path="/faq" element={<FaqPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Route>
 
-      <div className="site-shell">
-        <Header />
-        <main>
-          <Hero activeSimTab={activeSimTab} setActiveSimTab={setActiveSimTab} />
-          <MarqueeStrip />
-          <Services switchSimTab={switchSimTab} />
-          <About />
-          <HierarchyManager />
-          <Results />
-          <FAQ />
-          <Contact />
-        </main>
-        <Footer switchSimTab={switchSimTab} />
-      </div>
+      <Route path="/login" element={<LoginPage />} />
 
-      <BackToTop />
-    </>
+      <Route
+        path="/portal"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<PortalHomePage />} />
+        <Route path="users" element={<PortalUsersPage />} />
+        <Route path="users/create" element={<PortalUserCreatePage />} />
+        <Route path="rates" element={<PortalRatesPage />} />
+        <Route path="support" element={<PortalSupportPage />} />
+        <Route path="settings" element={<PortalSettingsPage />} />
+        <Route path="password" element={<PortalPasswordPage />} />
+      </Route>
+
+      <Route path="/home" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   )
 }
-
-export default App

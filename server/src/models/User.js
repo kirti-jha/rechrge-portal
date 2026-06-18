@@ -16,6 +16,13 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      unique: true,
+    },
     code: {
       type: String,
       required: true,
@@ -23,9 +30,18 @@ const userSchema = new mongoose.Schema(
       uppercase: true,
       unique: true,
     },
+    phone: {
+      type: String,
+      default: '',
+      trim: true,
+    },
     role: {
       type: String,
       enum: ['admin', 'retailor'],
+      required: true,
+    },
+    passwordHash: {
+      type: String,
       required: true,
     },
     parentId: {
@@ -42,9 +58,18 @@ const userSchema = new mongoose.Schema(
       type: chargeSchema,
       default: () => ({ mobile: 0, dth: 0, pan: 0 }),
     },
+    themePreference: {
+      type: String,
+      enum: ['light', 'dark'],
+      default: 'dark',
+    },
     isActive: {
       type: Boolean,
       default: true,
+    },
+    lastLoginAt: {
+      type: Date,
+      default: null,
     },
   },
   {

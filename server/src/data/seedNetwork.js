@@ -1,30 +1,61 @@
-export const seedNetwork = [
+export const seedUsers = [
   {
     name: 'Main Admin',
+    email: 'admin@lpay.in',
     code: 'ADM-001',
+    phone: '9999999999',
     role: 'admin',
-    parentId: null,
+    password: 'admin123',
+    parentCode: null,
+    themePreference: 'dark',
     charges: { mobile: 0, dth: 0, pan: 0 },
   },
   {
     name: 'Aarav Telecom',
+    email: 'aarav@lpay.in',
     code: 'RTL-101',
+    phone: '8888888881',
     role: 'retailor',
+    password: 'retailor123',
     parentCode: 'ADM-001',
+    themePreference: 'dark',
     charges: { mobile: 2.5, dth: 4, pan: 12 },
   },
   {
     name: 'Saanvi Digital Point',
+    email: 'saanvi@lpay.in',
     code: 'RTL-102',
+    phone: '8888888882',
     role: 'retailor',
+    password: 'retailor123',
     parentCode: 'ADM-001',
+    themePreference: 'light',
     charges: { mobile: 3, dth: 5, pan: 10 },
   },
   {
     name: 'Metro Recharge Hub',
+    email: 'metro@lpay.in',
     code: 'RTL-201',
+    phone: '8888888883',
     role: 'retailor',
+    password: 'retailor123',
     parentCode: 'RTL-101',
+    themePreference: 'dark',
     charges: { mobile: 1.75, dth: 3, pan: 8 },
+  },
+]
+
+export const seedSupportTickets = [
+  {
+    createdByCode: 'RTL-101',
+    subject: 'PAN correction request delayed',
+    message: 'A customer correction request is still pending after verification.',
+    status: 'open',
+  },
+  {
+    createdByCode: 'RTL-102',
+    subject: 'Need lower recharge settlement time',
+    message: 'Please review settlement delay on a recent DTH batch.',
+    status: 'in_progress',
   },
 ]
