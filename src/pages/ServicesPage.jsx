@@ -4,6 +4,28 @@ import PageHero from '../components/PageHero'
 import Services from '../components/Services'
 import Simulator from '../components/Simulator'
 
+const serviceHighlights = [
+  {
+    title: 'PAN Service Desk',
+    copy: 'Handle new applications, corrections, reprints and status follow-up from a single customer-facing workflow.',
+  },
+  {
+    title: 'Recharge Counter Flow',
+    copy: 'Use the same interface for fast mobile and DTH transactions without switching tools between services.',
+  },
+  {
+    title: 'Retailor-Friendly Operations',
+    copy: 'Keep services simple enough for shop staff while still preparing the flow for future API and wallet integration.',
+  },
+]
+
+const workflowSteps = [
+  'Select the service type from the unified portal.',
+  'Capture customer details with minimal friction.',
+  'Apply charges according to admin or retailor-level configuration.',
+  'Track output later from dashboard, support, and user-control pages.',
+]
+
 export default function ServicesPage() {
   const [activeSimTab, setActiveSimTab] = useState('mobile')
 
@@ -23,6 +45,25 @@ export default function ServicesPage() {
 
       <Services switchSimTab={setActiveSimTab} />
 
+      <section className="section page-detail-section">
+        <div className="section-heading">
+          <span className="eyebrow-badge">Service Model</span>
+          <h2>One page for discovery, one system for execution.</h2>
+          <p>
+            The public service page should help customers and partners understand what is available,
+            while the logged-in portal handles actual transactions, pricing and day-to-day operational control.
+          </p>
+        </div>
+        <div className="detail-card-grid three">
+          {serviceHighlights.map((item) => (
+            <article key={item.title} className="detail-card">
+              <h3>{item.title}</h3>
+              <p>{item.copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="section">
         <div className="section-heading">
           <span className="eyebrow-badge">Service Portal</span>
@@ -33,6 +74,21 @@ export default function ServicesPage() {
         </div>
         <div className="page-simulator-wrap">
           <Simulator activeSimTab={activeSimTab} setActiveSimTab={setActiveSimTab} />
+        </div>
+      </section>
+
+      <section className="section page-detail-section">
+        <div className="section-heading">
+          <span className="eyebrow-badge">Workflow</span>
+          <h2>How these service pages should evolve inside MERN.</h2>
+        </div>
+        <div className="process-strip">
+          {workflowSteps.map((step, index) => (
+            <article key={step} className="process-card">
+              <span>0{index + 1}</span>
+              <p>{step}</p>
+            </article>
+          ))}
         </div>
       </section>
     </div>
